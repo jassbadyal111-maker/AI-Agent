@@ -30,7 +30,10 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Flutter doctor
+      - name: Accept Android SDK licenses
+        run: yes | flutter doctor --android-licenses || true
+
+      - name: Verify Flutter environment
         run: flutter doctor -v
 
       - name: Install dependencies
@@ -44,6 +47,9 @@ jobs:
 
       - name: Build release APK
         run: flutter build apk --release
+
+      - name: Verify APK exists
+        run: test -s build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
